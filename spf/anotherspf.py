@@ -1,6 +1,6 @@
 
 import sys
-import os,copy
+import os,copy,math
 
 class PriorityQueue:
     def __init__(self):
@@ -185,6 +185,37 @@ class Vertex:
     def getId(self):
         return self.id
 
+def heightTree(bt):
+    '''
+    Prints the Height of the Tree. gets the Current Size Variable which keeps track of the total element in the tree.
+    we take a log of the current size and returns the ceiling (Rounded number) which is the height of the tree.
+    '''
+    print ("height of the tree is", math.ceil((math.log(bt.currentSize,2))))
+
+def levelOrderTraversal(bt):
+    #level order Traversal for Tree
+    j = 1
+    while j <= bt.currentSize:
+        if (2 * j) < bt.currentSize:
+            j = 2 * j
+        else:
+            break
+    level = math.ceil(math.log(j,2))
+    ilevel = 0
+    i = 1
+    j = 2 ** ilevel
+    print (bt.heapArray[1][1].name,end=' ')
+    while (i < bt.currentSize) and (ilevel <= level):
+        n=0
+        print ("At Level",j)
+        while n < j:
+            if (2*(j+n)) < bt.currentSize:
+                print (bt.heapArray[2*(j+n)][1].name,end=' ')
+            if (2*(j+n)+1) < bt.currentSize:
+                print (bt.heapArray[2*(j+n)+1][1].name,end=' ')
+            n = n+1
+        ilevel=ilevel+1
+        j = 2 ** ilevel
 
 def dijkstra(aGraph,start,end):
     #Create the Priority Queue
@@ -196,6 +227,8 @@ def dijkstra(aGraph,start,end):
     Tree and Position the Nodes according to there Distance
     '''
     pq.buildHeap([(v.getDistance(),v) for v in aGraph])
+
+    levelOrderTraversal(pq)
 
     # Run the Loop until the Tree is Empty
     while not pq.isEmpty():
